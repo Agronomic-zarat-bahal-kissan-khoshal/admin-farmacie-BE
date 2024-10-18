@@ -9,7 +9,7 @@ import { Sequelize } from "sequelize";
 // ========================================
 //         CODE IMPORTS
 // ========================================
-import User from "../../models/user/user.model.js";
+import DashboardUser from "../../models/auth/dashboardUser.model.js";
 import { bodyReqFields } from "../../utils/requiredFields.js"
 import { convertToLowercase, validateEmail } from '../../utils/utils.js';
 import { comparePassword, hashPassword, validatePassword } from "../../utils/passwordUtils.js";
@@ -23,7 +23,7 @@ import {
   successOk,
   successOkWithData,
   UnauthorizedError,
-  sequlizeValidationError
+  sequelizeValidationError
 } from "../../utils/responses.js";
 
 // ========================= nodemailer configuration ===========================
@@ -39,9 +39,7 @@ import {
 export async function registerUser(req, res) {
   try {
     const reqBodyFields = bodyReqFields(req, res, [
-      "firstName",
-      "lastName",
-      "gender",
+      "name",
       "email",
       "password",
       "confirmPassword",
@@ -51,18 +49,18 @@ export async function registerUser(req, res) {
     const excludedFields = ['password', 'confirmPassword', 'email'];
     const requiredData = convertToLowercase(req.body, excludedFields);
     const {
-      firstName, lastName, age, gender, email, password, confirmPassword, fcmToken
+      name, email, password, confirmPassword
     } = requiredData;
 
 
     // Check if a user with the given email already exists
-    let user = await User.findOne({
+    let user = await DashboardUser.findOne({
       where: {
         email: email
       }
     });
 
-    if (user) return validationError(res, "", "User already exists");
+    if (user) return validationError(res, "Dashboard User already exists", "");
 
     const invalidEmail = validateEmail(email)
     if (invalidEmail) return validationError(res, invalidEmail)
@@ -72,17 +70,14 @@ export async function registerUser(req, res) {
 
 
     const userData = {
-      first_name: firstName,
-      last_name: lastName,
-      age,
-      gender,
+      name,
       email,
       password: await hashPassword(password)
     }
 
-    await User.create(userData)
+    await DashboardUser.create(userData)
 
-    return created(res, "User created successfully")
+    return created(res, "DashboardUser created successfully")
   } catch (error) {
     if (error instanceof Sequelize.ValidationError) return sequlizeValidationError(res, error);
     else return catchError(res, error);
@@ -99,7 +94,7 @@ export async function loginUser(req, res) {
     const { email, password } = req.body;
 
     // Check if a user with the given email exists
-    const user = await User.findOne({ where: { email: email } });
+    const user = await DashboardUser.findOne({ where: { email: email } });
     if (!user) {
       return validationError(res, "Invalid email or password")
     }
@@ -150,7 +145,7 @@ export async function updatePassword(req, res) {
     const { oldPassword, newPassword, confirmPassword } = req.body;
 
     // Check if a user exists
-    const user = await User.findOne({ where: { uuid: req.userUid } });
+    const user = await DashboardUser.findOne({ where: { uuid: req.userUid } });
     if (!user) {
       return UnauthorizedError(res, "Invalid token")
     }
@@ -171,7 +166,7 @@ export async function updatePassword(req, res) {
     // Hash the new password
     const hashedPassword = await hashPassword(newPassword);
     // // Update user's password in the database
-    await User.update({ password: hashedPassword }, {
+    await DashboardUser.update({ password: hashedPassword }, {
       where: { uuid: req.userUid }
     });
 
@@ -190,7 +185,7 @@ export async function forgotPassword(req, res) {
 
     const { email } = req.body;
     // Check if a user with the given email exists
-    const user = await User.findOne({ where: { email: email } });
+    const user = await DashboardUser.findOne({ where: { email: email } });
     if (!user) {
       return validationError(res, "This email is not registered.", "email")
     }
@@ -209,7 +204,7 @@ export async function forgotPassword(req, res) {
         otp_count: 0
       }
       // Save OTP in the database
-      await User.update(otpData, {
+      await DashboardUser.update(otpData, {
         where: { email },
       });
       req.user = { email }
@@ -233,13 +228,13 @@ export async function verifyOtp(req, res) {
     const { email, otp } = req.body;
 
     // Check if a user with the given email exists
-    const user = await User.findOne({ where: { email: email } });
+    const user = await DashboardUser.findOne({ where: { email: email } });
     if (!user) return frontError(res, "This email is not registered.", "email")
     if (user.otp_count >= 3) return validationError(res, "Maximum OTP attempts reached. Please regenerate OTP.");
 
     // Compare OTP if does'nt match increment otp_count
     if (user.otp !== parseInt(otp, 10)) {
-      await User.update(
+      await DashboardUser.update(
         {
           otp_count: Sequelize.literal('otp_count + 1'),
         },
@@ -249,7 +244,7 @@ export async function verifyOtp(req, res) {
     }
 
     // OTP matched, set can_change_password to true
-    await User.update(
+    await DashboardUser.update(
       { can_change_password: true },
       { where: { email } }
     );
@@ -271,7 +266,7 @@ export async function setNewPassword(req, res) {
     const { newPassword, confirmPassword, email } = req.body;
 
     // Check if a user with the given email exists
-    const user = await User.findOne({ where: { email: email } });
+    const user = await DashboardUser.findOne({ where: { email: email } });
     if (!user) {
       return frontError(res, "user not found")
     }
@@ -289,14 +284,50 @@ export async function setNewPassword(req, res) {
     const hashedPassword = await hashPassword(newPassword);
 
     // Update user's password in the database
-    await User.update({ password: hashedPassword, can_change_password: false, otp: null, otp_count: 0 }, {
+    await DashboardUser.update({ password: hashedPassword, can_change_password: false, otp: null, otp_count: 0 }, {
       where: { email }
     });
 
     return successOk(res, "Password updated successfully.");
   } catch (error) {
-    catchError(res, error);
+    return catchError(res, error);
   }
 }
 
-// ===================================================================
+// ========================= getProfile ===========================
+
+
+export async function getProfile(req, res) {
+  try {
+    const profile = await DashboardUser.findByPk(req.userUid, { attributes: ["uuid", 'email', 'name'] });
+    if (!profile) return UnauthorizedError(res, "Invalid token");
+    return successOkWithData(res, "Profile fetched successfully", profile);
+  } catch (error) {
+    return catchError(res, error);
+  }
+}
+
+// ========================= updateProfile ===========================
+
+export async function updateProfile(req, res) {
+  try {
+
+    const { name } = req.body;
+
+    // Check if a user exists
+    const user = await DashboardUser.findOne({ where: { uuid: req.userUid } });
+    if (!user) {
+      return UnauthorizedError(res, "Invalid token")
+    }
+
+    // Update user's name in the database
+    if (name) {
+      await DashboardUser.update({ name }, {
+        where: { uuid: req.userUid }
+      });
+    }
+    return successOk(res, "Profile updated successfully.");
+  } catch (error) {
+    return catchError(res, error);
+  }
+}

@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 import bcrypt from "bcryptjs"
 
 // Define a schema for the user with email and password fields
-const User = sequelize.define('user', {
+const DashboardUser = sequelize.define('dashboard_user', {
     uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -18,23 +18,14 @@ const User = sequelize.define('user', {
         type: DataTypes.STRING,
         allowNull: false,           // Makes this field mandatory
     },
-    first_name: {
+    name: {
         type: DataTypes.STRING,
     },
-    last_name: {
-        type: DataTypes.STRING,
-    },
-    gender: {
-        type: DataTypes.ENUM('male', 'female', 'other'),
-        validate: {
-            isIn: {
-                args: [['male', 'female', 'other']],
-                msg: "Gender must be either 'male', 'female', or 'other'."
-            }
-        },
-    },
-    // use for email verification and password reset if needed
     verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    is_admin: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
     },
@@ -52,4 +43,4 @@ const User = sequelize.define('user', {
 },
 )
 
-export default User;
+export default DashboardUser;

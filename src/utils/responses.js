@@ -1,3 +1,4 @@
+import Sequelize from 'sequelize';
 // ================================================================
 // ===================== success responses ========================
 // ================================================================
@@ -157,7 +158,7 @@ const catchWithSequelizeFrontError = (res, error) => {
 const catchWithSequelizeValidationError = (res, error) => {
     if (error instanceof Sequelize.ValidationError) return sequelizeValidationError(res, error);
     if (error.errors && error.errors[0].errors instanceof Sequelize.ValidationError) return sequelizeValidationError(res, error)
-    if (error.name === 'SequelizeForeignKeyConstraintError') return validationError(res, "Selecting or seding a value that not exits.", "foreign_key");
+    if (error.name === 'SequelizeForeignKeyConstraintError') return validationError(res, "Selecting or setting a value that does not exist.", "foreign_key");
     if (error.name === 'SequelizeDatabaseError') return validationError(res, error.message);
     return catchError(res, error);
 };

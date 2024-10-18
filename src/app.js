@@ -21,7 +21,7 @@ import { connectDB } from "./config/dbConfig.js";
 import { getIPAddress } from "./utils/utils.js";
 import "./models/models.js";
 import authRoutes from "./routes/auth/auth.route.js";
-// import oAuthRoutes from "./routes/auth/oAuth.route.js";
+import productRoutes from "./routes/product/product.route.js";
 
 
 // =========================================
@@ -70,14 +70,12 @@ app.use('/static', express.static(path.join(__dirname, '..', 'static')));
 // =========================================
 // Route for root path
 app.get('/', (req, res) => {
-  res.send("Welcome to Boiler plate");
+  res.send("Welcome to Farmacie Iternal dashboard");
 });
 
-// Use authentication routes
+// routes
 app.use("/api/auth", authRoutes);
-// app.use("/api/oauth", oAuthRoutes);      // UNCOMMENT THIS, OAUTH ROUTES,CONTOLLERS AND CONFIGURE TO USE OAUTH
-
-// other routes
+app.use("/api/product", productRoutes);
 
 
 // =========================================
