@@ -285,6 +285,28 @@ export async function deleteProductImg(req, res) {
     }
 }
 
+// ========================== verifyProduct ================================
+
+export async function verifyProduct(req, res) {
+    try {
+        const queryFieldsReq = queryReqFields(req, res, ["uuid"])
+        if (queryFieldsReq.error) return queryFieldsReq.response
+
+        const productUid = req.query.uuid;
+        const product = await Product.findByPk(productUid);
+
+        if (!product) return frontError(res, "Product not found.", "uuid");
+        if (product.verified) return successOk(res, "Product already verified.");
+
+        product.verified = true;
+        await product.save();
+        return successOk(res, "Product verified successfully")
+
+    } catch (error) {
+        return catchError(res, error)
+    }
+}
+
 
 // ========================== productStats ================================
 

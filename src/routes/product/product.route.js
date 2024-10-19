@@ -14,6 +14,7 @@ router.route("/")
 router.get("/all", verifyToken, productCtrl.getProducts);
 router.get("/stats", verifyToken, productCtrl.productStats);
 router.delete("/image", verifyToken, productCtrl.deleteProductImg)
+router.post("/verify", verifyToken, productCtrl.verifyProduct)
 
 
 

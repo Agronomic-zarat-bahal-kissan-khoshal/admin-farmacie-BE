@@ -22,6 +22,11 @@ import { getIPAddress } from "./utils/utils.js";
 import "./models/models.js";
 import authRoutes from "./routes/auth/auth.route.js";
 import productRoutes from "./routes/product/product.route.js";
+import seedRoutes from "./routes/seed/seed.route.js";
+import ingredientRoutes from "./routes/ingredient/ingredient.route.js";
+import companyRoutes from "./routes/company/company.route.js";
+import companyUserRoutes from "./routes/company/companyUser.route.js";
+import queryRoutes from "./routes/query/query.route.js";
 
 
 // =========================================
@@ -70,12 +75,17 @@ app.use('/static', express.static(path.join(__dirname, '..', 'static')));
 // =========================================
 // Route for root path
 app.get('/', (req, res) => {
-  res.send("Welcome to Farmacie Iternal dashboard");
+  res.send("Welcome to Farmacie Internal dashboard");
 });
 
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/seed", seedRoutes);
+app.use("/api/ingredient", ingredientRoutes);
+app.use("/api/company", companyRoutes);
+app.use("/api/company/user", companyUserRoutes);
+app.use("/api/query", queryRoutes)
 
 
 // =========================================

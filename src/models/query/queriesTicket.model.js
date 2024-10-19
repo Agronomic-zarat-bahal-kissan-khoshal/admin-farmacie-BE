@@ -35,7 +35,7 @@ export default QueriesTicket;
 //                 RELATIONS
 // ==========================================
 
-import CompanyUser from "../auth/companyUser.model.js";
+import CompanyUser from "../company/companyUser.model.js";
 
 QueriesTicket.belongsTo(CompanyUser, { foreignKey: 'company_user_fk', targetKey: 'uuid', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 CompanyUser.hasMany(QueriesTicket, { foreignKey: 'company_user_fk', sourceKey: 'uuid', onDelete: 'CASCADE', onUpdate: 'CASCADE' });

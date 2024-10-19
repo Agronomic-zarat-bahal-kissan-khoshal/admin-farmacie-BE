@@ -112,7 +112,7 @@ const Seed = sequelize.define('seed', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    in_sumulator: {
+    in_simulator: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
@@ -125,7 +125,7 @@ export default Seed;
 // ==========================================================
 //                     Relations
 // ==========================================================
-import Company from "../user/company.model.js";
+import Company from "../company/company.model.js";
 import SeedImage from "./seedImage.model.js";
 
 // COMPANY
