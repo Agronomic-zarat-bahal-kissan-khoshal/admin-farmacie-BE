@@ -35,6 +35,20 @@ export async function getCompanyUsersList(req, res) {
     }
 }
 
+// ================= gerRegisteredCompanies =======================
+
+export async function gerRegisteredCompanies(req, res) {
+    try {
+        const registeredCompanies = await CompanyUser.findAll({
+            attributes: ["uuid", "company_name", "company_fk", "ntn", "contact", "email", "verified"],
+        });
+        return successOkWithData(res, "Company user list fetched successfully.", registeredCompanies)
+    } catch (error) {
+
+        return catchError(res, error)
+    }
+}
+
 
 // ================= verifyCompanyUser =======================
 

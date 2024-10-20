@@ -12,7 +12,7 @@ import { convertToLowercase, getRelativePath } from "../../utils/utils.js";
 
 export async function addSeed(req, res) {
     try {
-        const reqFields = ["seed_variety_name", "company_fk", "crop_category", "crop", "seed_weight", "package_weight", "package_type", "germination_percentage", "maturity_percentage", "min_harvesting_days", "max_harvesting_days", "suitable_region", "price"];
+        const reqFields = ["seed_variety_name", "company_fk", "crop_category", "crop", "seed_weight", "package_weight", "package_type", "germination_percentage", "maturity_percentage", "min_harvesting_days", "max_harvesting_days", "suitable_region"];
         const bodyFieldsReq = bodyReqFields(req, res, reqFields);
         if (bodyFieldsReq.error) return bodyFieldsReq.response;
 
@@ -20,7 +20,7 @@ export async function addSeed(req, res) {
         let requiredData = convertToLowercase(req.body);
 
         const { min_harvesting_days, max_harvesting_days } = requiredData;
-        if (min_harvesting_days > max_harvesting_days) return validationError(res, "Min harvesting days must be less than equal to max harvesting days");
+        if (parseInt(min_harvesting_days) > parseInt(max_harvesting_days)) return validationError(res, "Min harvesting days must be less than equal to max harvesting days");
 
         // DUPLICATION TEST
         const { seed_variety_name, company_fk, crop_category, crop, package_weight, package_type } = requiredData;
@@ -30,6 +30,7 @@ export async function addSeed(req, res) {
         // DOES SEED EXIST IN SIMULATOR CROP VARIETY
         const seedExistInSimulator = await Cropvariety.findOne({ where: { variety_eng: seed_variety_name }, attributes: ["variety_eng"] });
         if (seedExistInSimulator) requiredData.in_simulator = true;
+
         // ADDING SEED
         const seed = await Seed.create(requiredData);
 
@@ -80,7 +81,7 @@ export async function getSingleSeed(req, res) {
 export async function getSeeds(req, res) {
     try {
         const products = await Seed.findAll({
-            attributes: ['uuid', 'seed_variety_name', 'company_fk', 'crop_category', 'crop', "in_simulator"]
+            attributes: ['uuid', 'seed_variety_name', 'company_fk', 'crop_category', 'crop', "in_simulator", "trial_count"]
         });
         return successOkWithData(res, "Seeds fetched successfully", products);
     } catch (error) {
@@ -143,7 +144,9 @@ export async function updateSeed(req, res) {
 
         let requiredData = convertToLowercase(req.body);
         // Harvesting days validations
-        const { min_harvesting_days, max_harvesting_days } = requiredData;
+        let { min_harvesting_days, max_harvesting_days } = requiredData;
+        min_harvesting_days = parseInt(min_harvesting_days);
+        max_harvesting_days = parseInt(max_harvesting_days);
         if (min_harvesting_days && max_harvesting_days && min_harvesting_days > max_harvesting_days) return validationError(res, "Min harvesting days must be less than max harvesting days");
         if (min_harvesting_days && seed.max_harvesting_days < min_harvesting_days) return validationError(res, "Min harvesting days must be less than max harvesting days");
         if (max_harvesting_days && seed.min_harvesting_days > max_harvesting_days) return validationError(res, "Max harvesting days must be greater than min harvesting days");

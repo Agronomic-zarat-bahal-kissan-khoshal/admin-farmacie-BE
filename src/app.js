@@ -26,6 +26,7 @@ import seedRoutes from "./routes/seed/seed.route.js";
 import ingredientRoutes from "./routes/ingredient/ingredient.route.js";
 import companyRoutes from "./routes/company/company.route.js";
 import companyUserRoutes from "./routes/company/companyUser.route.js";
+import franchiseRoutes from "./routes/company/franchise.route.js";
 import queryRoutes from "./routes/query/query.route.js";
 
 
@@ -85,6 +86,7 @@ app.use("/api/seed", seedRoutes);
 app.use("/api/ingredient", ingredientRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/company/user", companyUserRoutes);
+app.use("/api/company/franchise", franchiseRoutes);
 app.use("/api/query", queryRoutes)
 
 

@@ -55,6 +55,7 @@ export async function getGlobalListCompanies(req, res) {
 }
 
 // ================= deleteCompany =======================
+
 export async function deleteGlobalListCompanies(req, res) {
     try {
         const reqQueryFields = queryReqFields(req, res, ["company"]);
@@ -62,7 +63,9 @@ export async function deleteGlobalListCompanies(req, res) {
         const requiredData = convertToLowercase(req.query);
         const { company } = requiredData;
 
-
+        // IF ANY COMPANY USER IS REGISTERED WITH THIS COMPANY SET STATUS TO UNVERIFIED
+        await CompanyUser.update({ verified: false }, { where: { company_fk: company } });
+        // DELETE COMPANY FROM GLOBAL LIST
         await Company.destroy({ where: { company } });
         return successOk(res, "Company deleted successfully");
     } catch (error) {
@@ -71,6 +74,7 @@ export async function deleteGlobalListCompanies(req, res) {
 }
 
 // ================= updateCompany =======================
+
 export async function updateGlobalListCompanies(req, res) {
     try {
         const reqBodyFields = bodyReqFields(req, res, ["company", "updatedCompany"]);
@@ -88,6 +92,7 @@ export async function updateGlobalListCompanies(req, res) {
 }
 
 // ================= getAllCompanyUsers =======================
+
 export async function getAllCompanyUsers(req, res) {
     try {
         const companyUsers = await CompanyUser.findAll();
@@ -98,8 +103,8 @@ export async function getAllCompanyUsers(req, res) {
     }
 }
 
-
 // ================= companyStats =======================
+
 export async function getCompaniesStats(req, res) {
     try {
         const globalListCompanies = await Company.count();

@@ -77,8 +77,8 @@ export default Franchise;
 // ==========================================================
 //                     Relations
 // ==========================================================
-import FranchiseManager from './fanchiseManager.model.js';
-import Company from '../auth/company.model.js';
+import FranchiseManager from './franchiseManager.model.js';
+import Company from './company.model.js';
 
 // WITH FRANCHISE MANAGER
 FranchiseManager.hasMany(Franchise, { foreignKey: 'user_fk', sourceKey: 'uuid', as: 'franchise', onDelete: 'SET NULL', onUpdate: 'CASCADE' });
