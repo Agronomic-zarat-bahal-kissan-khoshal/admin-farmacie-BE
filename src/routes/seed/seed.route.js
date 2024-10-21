@@ -15,6 +15,7 @@ router.route("/")
 router.get("/all", verifyToken, seedCtrl.getSeeds);
 router.delete("/image", verifyToken, seedCtrl.deleteSeedImg)
 router.get("/stats", verifyToken, seedCtrl.seedStats)
+router.patch("/already-in-simulator", verifyToken, seedCtrl.alreadyInSimulator)
 
 
 export default router;

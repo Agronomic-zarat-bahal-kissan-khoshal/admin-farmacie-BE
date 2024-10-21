@@ -9,6 +9,9 @@ const Crop = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false,
             primaryKey: true,
+            unique: {
+                msg: 'Crop with the follwoing name is already exist.'
+            },
         },
         crop_category: {
             type: DataTypes.STRING,
@@ -19,9 +22,19 @@ const Crop = sequelize.define(
         },
         root_depth_max_m: {
             type: DataTypes.FLOAT,
+            validate: {
+                isFloat: {
+                    msg: 'Root depth max milimeter must be a valid float or integer value',
+                },
+            },
         },
         seed_sowing_depth_m: {
             type: DataTypes.FLOAT,
+            validate: {
+                isFloat: {
+                    msg: 'Seed sowing depth milimeter must be a valid float or integer value',
+                },
+            },
         },
     },
     {

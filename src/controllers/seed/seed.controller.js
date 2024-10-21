@@ -29,7 +29,10 @@ export async function addSeed(req, res) {
 
         // DOES SEED EXIST IN SIMULATOR CROP VARIETY
         const seedExistInSimulator = await Cropvariety.findOne({ where: { variety_eng: seed_variety_name }, attributes: ["variety_eng"] });
-        if (seedExistInSimulator) requiredData.in_simulator = true;
+        if (seedExistInSimulator) {
+            requiredData.in_simulator = true
+            await Cropvariety.update({ in_farmacie: true }, { where: { variety_eng: seed_variety_name } })
+        };
 
         // ADDING SEED
         const seed = await Seed.create(requiredData);
@@ -170,5 +173,26 @@ export async function seedStats(req, res) {
         return successOkWithData(res, "Seeds fetched successfully", { seedCount, seedInSimulatorCount });
     } catch (error) {
         return catchError(res, error);
+    }
+}
+
+// ================= alreadyInSimulator =======================
+
+export async function alreadyInSimulator(req, res) {
+    try {
+        const reqFields = ["uuid"]
+        const queryField = queryReqFields(req, res, reqFields)
+        if (queryField.error) return queryField.error;
+
+        const { uuid } = req.query;
+        const seed = await Seed.findByPk(uuid)
+
+        if (!seed) return notFound(res, "seed not found.")
+        if (seed.in_simulator) return successOk(res, "Seed in simulator status already set.")
+        seed.in_simulator = true;
+        await seed.save();
+        return successOk(res, "seed in simulator status updated successfully.")
+    } catch (error) {
+        return catchError(res, error)
     }
 }

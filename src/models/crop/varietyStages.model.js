@@ -24,30 +24,73 @@ const VarietyStage = sequelize.define(
         bbch_scale: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only integer value.",
+                },
+                min: {
+                    args: [0],
+                    msg: "Accept positive integer value greater than equal to 0.",
+                },
+                max: {
+                    args: [20],
+                    msg: "Accept positive integer value less than equal to 20.",
+                }
+            }
         },
         kc: {
             type: DataTypes.FLOAT,
             allowNull: false,
+            validate: {
+                isFloat: {
+                    msg: "Accepts only numbers with or without decimal.",
+                },
+            },
         },
         start_gdd: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only integer value.",
+                },
+            }
         },
         end_gdd: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only integer value.",
+                },
+            }
         },
         base_temp: {
             type: DataTypes.FLOAT,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only numbers with or without decimal.",
+                },
+            }
         },
         min_temp: {
             type: DataTypes.FLOAT,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only numbers with or without decimal.",
+                },
+            }
         },
         max_temp: {
             type: DataTypes.FLOAT,
             allowNull: false,
+            validate: {
+                isInt: {
+                    msg: "Accepts only numbers with or without decimal.",
+                },
+            }
         },
     },
     {
@@ -56,7 +99,7 @@ const VarietyStage = sequelize.define(
         indexes: [
             {
                 unique: true,
-                fields: ['crop_variety_fk', 'stage']
+                fields: ['crop_variety_fk', 'sub_stage']
             }
         ]
     }
