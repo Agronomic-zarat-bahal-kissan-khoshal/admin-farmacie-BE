@@ -1,8 +1,10 @@
 import { catchError, catchWithSequelizeValidationError, conflictError, created, frontError, notFound, sequelizeValidationError, successOk, successOkWithData, validationError } from "../../utils/responses.js";
 import Ingredient from "../../models/ingredient/ingredient.model.js";
 import { bodyReqFields, queryReqFields } from "../../utils/requiredFields.js";
-import { Op } from "sequelize";
+import { literal, Op } from "sequelize";
 import { convertToLowercase } from "../../utils/utils.js";
+import Product from "../../models/product/product.model.js";
+import ActiveIngredient from "../../models/ingredient/activeIngredient.model.js";
 
 // ========================================
 //             CONTOLLERS
@@ -63,7 +65,21 @@ export async function deleteGlobalListIngredient(req, res) {
         const requiredData = convertToLowercase(req.query);
         const { ingredient } = requiredData;
 
+        // FINDING ALL PRODUCTS THAT HAVE THIS INGREDIENT AND BLACKLISTING THEM
+        let activeIngredient = await ActiveIngredient.findAll({
+            where: { ingredient_fk: ingredient },
+            attributes: ["product_fk"],
+        })
+        if (activeIngredient.length > 0) {
+            let productUids = activeIngredient.map(ingredient => ingredient.product_fk);
+            productUids = [...new Set(productUids)];
+            await Product.update(
+                { blacklist: true, verified: false },
+                { where: { uuid: productUids } }
+            )
+        }
 
+        // DELETING THE INGREDIENT
         await Ingredient.destroy({ where: { ingredient_name: ingredient } });
         return successOk(res, "Ingredient deleted successfully");
     } catch (error) {

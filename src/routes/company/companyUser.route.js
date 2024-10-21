@@ -1,12 +1,12 @@
 import express from "express";
 import * as companyUserCtrl from "../../controllers/company/companyUser.controller.js";
-import verifyToken from "../../middlewares/authMiddleware.js";
+import verifyToken, { isAdmin } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
 
 // ADD THE IS ADMIN MIDDLEWARE FOR DELETE
-router.route('/').delete(verifyToken, companyUserCtrl.deleteCompanyUser);
+router.route('/').delete(verifyToken, isAdmin, companyUserCtrl.deleteCompanyUser);
 router.route('/list').get(verifyToken, companyUserCtrl.getCompanyUsersList);
 router.route("/verify").post(verifyToken, companyUserCtrl.verifyCompanyUser);
 

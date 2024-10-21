@@ -1,6 +1,6 @@
 import express from "express";
 import * as cropVarietyCtrl from "../../controllers/crop/cropVariety.controller.js";
-import verifyToken from "../../middlewares/authMiddleware.js"
+import verifyToken, { isAdmin } from "../../middlewares/authMiddleware.js"
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ router.route("/")
     .post(verifyToken, cropVarietyCtrl.addCropVariety)
     .patch(verifyToken, cropVarietyCtrl.updateCropVariety)
     .get(verifyToken, cropVarietyCtrl.getSingleCropVariety)
-    .delete(verifyToken, cropVarietyCtrl.deleteCropVariety);
+    .delete(verifyToken, isAdmin, cropVarietyCtrl.deleteCropVariety);
 
 router.get("/all", verifyToken, cropVarietyCtrl.getAllCropVarieties);
 router.get("/list", verifyToken, cropVarietyCtrl.getCropVarietiesList)

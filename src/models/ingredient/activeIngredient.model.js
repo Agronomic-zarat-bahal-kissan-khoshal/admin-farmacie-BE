@@ -38,7 +38,7 @@ export default ActiveIngredient;
 //                     Relations
 // ==========================================================
 
-import Ingredient from './ingredient.model.js';
+import Ingredient from '../ingredient/ingredient.model.js';
 
 ActiveIngredient.belongsTo(Ingredient, { foreignKey: 'ingredient_fk', targetKey: 'ingredient_name', onDelete: 'CASCADE', onUpdate: 'CASCADE' });
 Ingredient.hasMany(ActiveIngredient, { foreignKey: 'ingredient_fk', sourceKey: 'ingredient_name', onDelete: 'CASCADE', onUpdate: 'CASCADE' });

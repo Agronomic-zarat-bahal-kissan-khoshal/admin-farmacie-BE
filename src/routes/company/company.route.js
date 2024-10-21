@@ -1,6 +1,6 @@
 import express from "express";
 import * as companyCtrl from "../../controllers/company/company.controller.js";
-import verifyToken from "../../middlewares/authMiddleware.js";
+import verifyToken, { isAdmin } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const router = express.Router();
 router.route("/global-list")
     .get(verifyToken, companyCtrl.getGlobalListCompanies)
     .post(verifyToken, companyCtrl.addCompniestoGlobalList)
-    .delete(verifyToken, companyCtrl.deleteGlobalListCompanies)
+    .delete(verifyToken, isAdmin, companyCtrl.deleteGlobalListCompanies)
     .put(verifyToken, companyCtrl.updateGlobalListCompanies);
 
 
