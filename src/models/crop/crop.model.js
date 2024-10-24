@@ -36,6 +36,15 @@ const Crop = sequelize.define(
                 },
             },
         },
+        stage_count: {
+            type: DataTypes.INTEGER,
+            validate: {
+                isInt: {
+                    msg: 'Stage count must be a valid integer value',
+                },
+            },
+            defaultValue: 0,
+        }
     },
     {
         schema: "public",       // Change this to "crop" later --- when deploy

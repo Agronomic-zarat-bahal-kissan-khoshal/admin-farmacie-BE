@@ -5,6 +5,7 @@ import VarietyStage from "./crop/varietyStages.model.js";
 import Seed from "./seed/seed.model.js";
 import ActiveIngredient from "./ingredient/activeIngredient.model.js";
 import Product from "./product/product.model.js";
+import CropStage from "./crop/cropStage.model.js";
 
 
 // ============================================
@@ -12,8 +13,9 @@ import Product from "./product/product.model.js";
 // ============================================
 // DashboardUser.sync({ alter: true });
 // Cropvariety.sync({ alter: true });
-// Crop.sync({ alter: true });
+Crop.sync({ alter: true });
 // VarietyStage.sync({ alter: true });
 // Seed.sync({ alter: true });
-Product.sync({ alter: true });
+// Product.sync({ alter: true });
 // ActiveIngredient.sync({ force: true });
+CropStage.sync({ alter: true });
