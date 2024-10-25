@@ -23,6 +23,7 @@ import "./models/models.js";
 import authRoutes from "./routes/auth/auth.route.js";
 import productRoutes from "./routes/product/product.route.js";
 import seedRoutes from "./routes/seed/seed.route.js";
+import seedTrialRoutes from "./routes/seedTrial/seedTrial.route.js";
 import cropRoutes from "./routes/crop/crop.route.js";
 import cropStagesRoutes from "./routes/crop/cropStage.route.js";
 import cropVarietyRoutes from "./routes/crop/cropVariety.route.js";
@@ -87,6 +88,7 @@ app.get('/', (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/seed", seedRoutes);
+app.use("/api/seed/trial", seedTrialRoutes);
 app.use("/api/crop", cropRoutes);
 app.use("/api/crop/stages", cropStagesRoutes);
 app.use("/api/crop/variety", cropVarietyRoutes);

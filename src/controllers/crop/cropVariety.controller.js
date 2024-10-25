@@ -4,7 +4,6 @@ import { catchError, catchWithSequelizeValidationError, conflictError, created, 
 import { bodyReqFields, queryReqFields } from "../../utils/requiredFields.js";
 import { convertToLowercase } from "../../utils/utils.js";
 import Seed from "../../models/seed/seed.model.js";
-import { where } from "sequelize";
 
 
 // ============================================

@@ -21,16 +21,23 @@ export async function addCropStage(req, res) {
         const requiredData = convertToLowercase(req.body);
 
         const transaction = await sequelize.transaction();
-        await CropStage.create(requiredData, transaction);
-        // INCREMENT THE STAGE COUNT IN CROP TABLE
-        await Crop.increment('stage_count', {
-            by: 1,
-            where: { crop_name: requiredData.crop_fk },
-            transaction
-        });
-        await transaction.commit();
+        try {
+            await CropStage.create(requiredData, { transaction });
+            // INCREMENT THE STAGE COUNT IN CROP TABLE
+            await Crop.increment('stage_count', {
+                by: 1,
+                where: { crop_name: requiredData.crop_fk },
+                transaction
+            });
+            await transaction.commit();
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
+        }
+
         return created(res, "Crop stage added successfully")
     } catch (error) {
+
         if (error instanceof Sequelize.UniqueConstraintError) return validationError(res, "A crop can not have two same principle stages.");
         return catchWithSequelizeValidationError(res, error)
     }
@@ -91,15 +98,23 @@ export async function deleteCropStage(req, res) {
         const cropStage = await CropStage.findByPk(uuid);
         if (!cropStage) return successOk(res, "Crop stage already deleted.")
 
+
         const transaction = await sequelize.transaction();
-        await CropStage.destroy({ where: { uuid }, transaction });
-        // DECREMENT THE STAGE COUNT IN CROP TABLE
-        await Crop.decrement('stage_count', {
-            by: 1,
-            where: { crop_name: cropStage.crop_fk },
-            transaction
-        });
-        await transaction.commit();
+        try {
+            await CropStage.destroy({ where: { uuid }, transaction });
+            // DECREMENT THE STAGE COUNT IN CROP TABLE
+            await Crop.decrement('stage_count', {
+                by: 1,
+                where: { crop_name: cropStage.crop_fk },
+                transaction
+            });
+
+            await transaction.commit();
+        } catch (error) {
+            await transaction.rollback();
+            throw error;
+        }
+
         return successOk(res, "Crop stage deleted successfully")
     } catch (error) {
         return catchError(res, error)

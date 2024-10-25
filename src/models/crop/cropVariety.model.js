@@ -128,7 +128,6 @@ const Cropvariety = sequelize.define(
                 }
             }
         },
-
         mad_percentage: {
             type: DataTypes.FLOAT,
             validate: {
@@ -145,6 +144,29 @@ const Cropvariety = sequelize.define(
                 }
             }
         },
+        height_class: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+
+        nutrient_content: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        common_disease_tolerance: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+
+        env_resilience_fators: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        unique_features: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+
         sand: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
