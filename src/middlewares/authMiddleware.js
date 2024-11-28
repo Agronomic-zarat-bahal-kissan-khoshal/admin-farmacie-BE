@@ -20,8 +20,8 @@ export default function verifyToken(req, res, next) {
 
 // ============================= isAdmin ==============================
 
-export function isAdmin(req, res, next) {
-  const user = DashboardUser.findByPk(req.userUid);
+export async function isAdmin(req, res, next) {
+  const user = await DashboardUser.findByPk(req.userUid);
   if (!user) return UnauthorizedError(res, "Invalid token");
   if (!user.is_admin) return forbiddenError(res, "Access denied. Only admin allowed to perform this operation.");
   req.user = user;
