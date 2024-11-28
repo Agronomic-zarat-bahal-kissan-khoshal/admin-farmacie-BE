@@ -23,7 +23,8 @@ import {
   successOk,
   successOkWithData,
   UnauthorizedError,
-  sequelizeValidationError
+  sequelizeValidationError,
+  forbiddenError
 } from "../../utils/responses.js";
 
 // ========================= nodemailer configuration ===========================
@@ -103,6 +104,10 @@ export async function loginUser(req, res) {
     const isMatch = await comparePassword(password, user.password)
     if (!isMatch) {
       return validationError(res, "Invalid email or password");
+    }
+
+    if (!user.verified) {
+      return forbiddenError(res, "Profile is not verified. Contact the admin to verify your profile.");
     }
 
     // Generate tokens
