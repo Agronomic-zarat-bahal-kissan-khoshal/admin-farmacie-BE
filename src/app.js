@@ -33,6 +33,7 @@ import companyRoutes from "./routes/company/company.route.js";
 import companyUserRoutes from "./routes/company/companyUser.route.js";
 import franchiseRoutes from "./routes/company/franchise.route.js";
 import queryRoutes from "./routes/query/query.route.js";
+import { domain } from "./config/initialConfig.js";
 
 
 // =========================================
