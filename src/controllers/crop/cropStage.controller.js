@@ -57,7 +57,7 @@ export async function getCropStages(req, res) {
             where: { crop_fk: crop_name },
             attributes: ["uuid", "stage", "sub_stage", "bbch_scale"]
         })
-        return successOkWithData(res, cropStages)
+        return successOkWithData(res, "Data fetched successfully.", cropStages)
     } catch (error) {
         return catchError(res, error)
     }

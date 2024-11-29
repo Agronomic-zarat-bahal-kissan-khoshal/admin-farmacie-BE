@@ -30,7 +30,7 @@ export async function getAllCrops(req, res) {
         const crops = await Crop.findAll({
             attributes: ["crop_name", "crop_category", "source"]
         })
-        return successOkWithData(res, crops)
+        return successOkWithData(res, "Crops fetched successfully.", crops)
     } catch (error) {
         return catchError(res, error)
     }
@@ -43,7 +43,7 @@ export async function getCropsList(req, res) {
         const cropsList = await Crop.findAll({
             attributes: ["crop_name"]
         })
-        return successOkWithData(res, cropsList)
+        return successOkWithData(res, "Data fetched successfully.", cropsList)
     } catch (error) {
         return catchError(res, error)
     }
@@ -58,7 +58,7 @@ export async function getSingleCrop(req, res) {
         const crop_name = req.query.crop_name.toLowerCase();
         const cropsList = await Crop.findByPk(crop_name);
         if (!cropsList) return notFound(res, "Crop not found.")
-        return successOkWithData(res, cropsList)
+        return successOkWithData(res, "Data fetched successfully.", cropsList)
     } catch (error) {
         return catchError(res, error)
     }
@@ -104,7 +104,7 @@ export async function cropStats(req, res) {
     try {
         const cropsCount = await Crop.count();
         const varietiesCount = await Cropvariety.count();
-        return successOkWithData(res, "Crop deleted successfully.", { cropsCount, varietiesCount });
+        return successOkWithData(res, "Stats fetched successfully.", { cropsCount, varietiesCount });
     } catch (error) {
         return catchError(res, error);
     }

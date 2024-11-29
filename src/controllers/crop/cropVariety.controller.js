@@ -40,7 +40,7 @@ export async function getAllCropVarieties(req, res) {
         const cropVarieties = await Cropvariety.findAll({
             attributes: ["variety_eng", "variety_urdu", "crop_fk", "in_farmacie"]
         })
-        return successOkWithData(res, cropVarieties)
+        return successOkWithData(res, "Data fetched successfully.", cropVarieties)
     } catch (error) {
         return catchError(res, error)
     }
@@ -53,7 +53,7 @@ export async function getCropVarietiesList(req, res) {
         const cropVarietiesList = await Cropvariety.findAll({
             attributes: ["variety_eng", "crop_fk"]
         })
-        return successOkWithData(res, cropVarietiesList)
+        return successOkWithData(res, "Data fetched successfully.", cropVarietiesList)
     } catch (error) {
         return catchError(res, error)
     }
@@ -69,7 +69,7 @@ export async function getSingleCropVariety(req, res) {
         const variety_eng = req.query.variety_eng.toLowerCase();
         const cropVariety = await Cropvariety.findByPk(variety_eng);
         if (!cropVariety) return notFound(res, "Crop variety not found.")
-        return successOkWithData(res, cropVariety)
+        return successOkWithData(res, "Data fetched successfully.", cropVariety)
     } catch (error) {
         return catchError(res, error)
     }

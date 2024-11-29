@@ -42,7 +42,7 @@ export async function getAllVarietyStages(req, res) {
             order: [["bbch_scale", "ASC"]],
             where: { crop_variety_fk: variety_eng }
         })
-        return successOkWithData(res, varietyStages)
+        return successOkWithData(res, "Data fetched successfully.", varietyStages)
     } catch (error) {
         return catchError(res, error)
     }
@@ -59,7 +59,7 @@ export async function getSingleStage(req, res) {
 
         const varietyStage = await VarietyStage.findByPk(uid)
         if (!varietyStage) return notFound(res, "Variety Stage not found.")
-        return successOkWithData(res, varietyStage)
+        return successOkWithData(res, "Data fetched successfully.", varietyStage)
     } catch (error) {
         return catchError(res, error)
     }
