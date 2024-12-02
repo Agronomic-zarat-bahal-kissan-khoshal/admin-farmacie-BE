@@ -131,7 +131,7 @@ const Seed = sequelize.define('seed', {
         }
     },
     description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true
     },
     in_simulator: {

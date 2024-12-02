@@ -55,7 +55,8 @@ export async function getCropStages(req, res) {
         const crop_name = req.query.crop_name.toLowerCase();
         const cropStages = await CropStage.findAll({
             where: { crop_fk: crop_name },
-            attributes: ["uuid", "stage", "sub_stage", "bbch_scale"]
+            attributes: ["uuid", "stage", "sub_stage", "bbch_scale"],
+            order: [["bbch_scale", "ASC"]],
         })
         return successOkWithData(res, "Data fetched successfully.", cropStages)
     } catch (error) {
