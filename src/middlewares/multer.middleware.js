@@ -1,10 +1,10 @@
 
 export function setProductImgPath(req, res, next) {
-    req.storagePath = `./static/images/products/`;
+    req.storagePath = `../static/images/products/`;
     next();
 }
 
 export function setSeedImgPath(req, res, next) {
-    req.storagePath = `./static/images/seeds/`;
+    req.storagePath = `../static/images/seeds/`;
     next();
 }

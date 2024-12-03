@@ -128,6 +128,15 @@ const Cropvariety = sequelize.define(
                 }
             }
         },
+        base_temp: {
+            type: DataTypes.FLOAT,
+        },
+        min_temp: {
+            type: DataTypes.FLOAT,
+        },
+        max_temp: {
+            type: DataTypes.FLOAT,
+        },
         mad_percentage: {
             type: DataTypes.FLOAT,
             validate: {

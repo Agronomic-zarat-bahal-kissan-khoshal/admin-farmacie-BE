@@ -67,7 +67,6 @@ const VarietyStage = sequelize.define(
         },
         base_temp: {
             type: DataTypes.FLOAT,
-            allowNull: false,
             validate: {
                 isInt: {
                     msg: "Accepts only numbers with or without decimal.",
@@ -76,7 +75,6 @@ const VarietyStage = sequelize.define(
         },
         min_temp: {
             type: DataTypes.FLOAT,
-            allowNull: false,
             validate: {
                 isInt: {
                     msg: "Accepts only numbers with or without decimal.",
@@ -85,7 +83,6 @@ const VarietyStage = sequelize.define(
         },
         max_temp: {
             type: DataTypes.FLOAT,
-            allowNull: false,
             validate: {
                 isInt: {
                     msg: "Accepts only numbers with or without decimal.",
