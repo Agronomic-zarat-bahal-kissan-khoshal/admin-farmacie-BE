@@ -1,7 +1,7 @@
-import sequelize from "../../config/dbConfig.js";
+import sequelize, { sequelizeMW } from "../../config/dbConfig.js";
 import { DataTypes } from "sequelize";
 
-const VarietyStage = sequelize.define(
+const VarietyStage = sequelizeMW.define(
     "variety_stage",
     {
         uid: {
@@ -91,7 +91,7 @@ const VarietyStage = sequelize.define(
         },
     },
     {
-        schema: "public",    // Change this to "crop" later --- when deploy
+        schema: "crop",    // Change this to "crop" later --- when deploy
         timestamps: false,
         indexes: [
             {

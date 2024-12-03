@@ -1,8 +1,8 @@
-import sequelize from "../../config/dbConfig.js";
+import sequelize, { sequelizeMW } from "../../config/dbConfig.js";
 import { DataTypes } from "sequelize";
 
 
-const Cropvariety = sequelize.define(
+const Cropvariety = sequelizeMW.define(
     "crop_variety",
     {
         variety_eng: {
@@ -243,7 +243,7 @@ const Cropvariety = sequelize.define(
         }
     },
     {
-        schema: "public",      // Change this to "crop" later --- when deploy
+        schema: "crop",      // Change this to "crop" later --- when deploy
         timestamps: false,
         indexes: [
             {
