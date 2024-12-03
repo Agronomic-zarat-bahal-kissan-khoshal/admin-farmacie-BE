@@ -7,6 +7,7 @@ import ActiveIngredient from "./ingredient/activeIngredient.model.js";
 import Product from "./product/product.model.js";
 import CropStage from "./crop/cropStage.model.js";
 import Company from "./company/company.model.js";
+import SeedTrial from "./seedTrial/seedTrial.model.js";
 
 
 // ============================================
@@ -22,3 +23,4 @@ import Company from "./company/company.model.js";
 // // ActiveIngredient.sync({ force: true });
 // CropStage.sync({ alter: true });
 // Company.sync({ alter: true });
+// SeedTrial.sync({ alter: true });
