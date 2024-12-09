@@ -5,7 +5,7 @@ import { bodyReqFields, queryReqFields } from "../../utils/requiredFields.js";
 import Cropvariety from "../../models/crop/cropVariety.model.js";
 import { convertToLowercase } from "../../utils/utils.js";
 import Sequelize from "sequelize";
-import sequelize from "../../config/dbConfig.js";
+import sequelize, { sequelizeMW } from "../../config/dbConfig.js";
 
 
 
@@ -20,7 +20,7 @@ export async function addCropStage(req, res) {
         if (bodyFieldsReq.error) return bodyFieldsReq.response
         const requiredData = convertToLowercase(req.body);
 
-        const transaction = await sequelize.transaction();
+        const transaction = await sequelizeMW.transaction();
         try {
             await CropStage.create(requiredData, { transaction });
             // INCREMENT THE STAGE COUNT IN CROP TABLE
