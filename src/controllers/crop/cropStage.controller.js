@@ -100,7 +100,7 @@ export async function deleteCropStage(req, res) {
         if (!cropStage) return successOk(res, "Crop stage already deleted.")
 
 
-        const transaction = await sequelize.transaction();
+        const transaction = await sequelizeMW.transaction();
         try {
             await CropStage.destroy({ where: { uuid }, transaction });
             // DECREMENT THE STAGE COUNT IN CROP TABLE
