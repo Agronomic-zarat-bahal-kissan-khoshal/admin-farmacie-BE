@@ -41,7 +41,8 @@ export async function getAllCrops(req, res) {
 export async function getCropsList(req, res) {
     try {
         const cropsList = await Crop.findAll({
-            attributes: ["crop_name"]
+            attributes: ["crop_name"],
+            order: [["crop_name", "ASC"]],
         })
         return successOkWithData(res, "Data fetched successfully.", cropsList)
     } catch (error) {
