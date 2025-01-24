@@ -9,9 +9,9 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
-import os from "os"
-import { fileURLToPath } from 'url';
-import path from 'path';
+import os from "os";
+import { fileURLToPath } from "url";
+import path from "path";
 
 // =========================================
 //             Code Import
@@ -33,8 +33,8 @@ import companyRoutes from "./routes/company/company.route.js";
 import companyUserRoutes from "./routes/company/companyUser.route.js";
 import franchiseRoutes from "./routes/company/franchise.route.js";
 import queryRoutes from "./routes/query/query.route.js";
+import referralCode from "./routes/referralCode/referralCodeRoutes.js";
 import { domain } from "./config/initialConfig.js";
-
 
 // =========================================
 //            Configurations
@@ -48,7 +48,7 @@ app.use(helmet());
 
 // Enable CORS with default settings
 const crosOptions = {
-  origin: nodeEnv === 'production' ? domain : '*',                                // allow requests from all ips in development, and use array for multiple domains
+  origin: nodeEnv === "production" ? domain : "*", // allow requests from all ips in development, and use array for multiple domains
   // allowedHeaders: ['Content-Type', 'Authorization', 'x-token', 'y-token'],    // allow these custom headers only
 };
 app.use(cors(crosOptions));
@@ -75,13 +75,13 @@ app.use(express.json());
 // Convert import.meta.url to a file path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-app.use('/static', express.static(path.join(__dirname, '../../', 'static')));
+app.use("/static", express.static(path.join(__dirname, "../../", "static")));
 
 // =========================================
 //            Routes
 // =========================================
 // Route for root path
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to Farmacie Internal dashboard");
 });
 
@@ -98,8 +98,8 @@ app.use("/api/ingredient", ingredientRoutes);
 app.use("/api/company", companyRoutes);
 app.use("/api/company/user", companyUserRoutes);
 app.use("/api/company/franchise", franchiseRoutes);
-app.use("/api/query", queryRoutes)
-
+app.use("/api/query", queryRoutes);
+app.use("/api/referralcode", referralCode);
 
 // =========================================
 //            Global Error Handler
@@ -113,13 +113,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-
-
 // Database connection
 connectDB();
 
-
 // Server running
 app.listen(port, () => {
-  console.log(chalk.bgYellow.bold(` Server is listening at http://${getIPAddress()}:${port} `));
+  console.log(
+    chalk.bgYellow.bold(
+      ` Server is listening at http://${getIPAddress()}:${port} `
+    )
+  );
 });

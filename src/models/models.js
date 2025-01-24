@@ -8,7 +8,7 @@ import Product from "./product/product.model.js";
 import CropStage from "./crop/cropStage.model.js";
 import Company from "./company/company.model.js";
 import SeedTrial from "./seedTrial/seedTrial.model.js";
-
+import ReferralCode from "./referralCode/referralCode.js";
 
 // ============================================
 //                Sync Database
