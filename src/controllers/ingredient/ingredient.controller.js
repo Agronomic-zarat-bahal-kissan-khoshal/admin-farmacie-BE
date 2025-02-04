@@ -47,7 +47,7 @@ export async function addIngredientsToGlobalList(req, res) {
 
 export async function getGlobalListIngredients(req, res) {
     try {
-        const ingredients = await Ingredient.findAll({ attributes: ["ingredient_name"] });
+        const ingredients = await Ingredient.findAll({ attributes: ["ingredient_name"], order: [["ingredient_name", "ASC"]], });
         const count = ingredients.length;
         return successOkWithData(res, "Ingredients fetched successfully", { ingredients, count });
     } catch (error) {
